@@ -1,52 +1,99 @@
 import { useState, useEffect } from 'react';
 import React from 'react'
 import axios from 'axios';
-
+import { MagnifyingGlass } from 'react-loader-spinner'
+import { Table } from 'antd';
 
 function DataOnepiece() {
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+    },
+
+  ];
+  // const [data, setData,] = useState([]);
   const [charactersAll, setCharactersAll] = useState([])
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    try{
-      const url = 'https://api.api-onepiece.com/characters';
-      axios.get(url).then((response) => {
-     
-        setCharactersAll(response.data)
-        setLoading(true)
-      })
-    }catch(error) {
-      console.log(error,"Error get data")
-    } finally{
-      setLoading(false);
-    }
+  const url = 'https://api.api-onepiece.com/characters';
+  const data = [];
+  // data.push({
 
-  }, []);
+  //   key: "sdf",
+  //   name: "Name",
+  // });
+  try {
+
+    axios.get(url).then((response) => {
+
+      // handle success
+      // console.log(response.data);
+   
+      for (const item  in response.data) {
+        var userData = response.data[item];
+        data.push({
+
+          key: userData.id,
+          name: userData.french_name,
+        });
+        console.log(data.index)
+
+      }
+
+    })
+  } catch (error) {
+    console.error(error);
+  }
+
+
+
+
+
 
   return (
+    <>
+      <div style={{ display: 'flex', justifyContent: "center", textAlign: "center", width: "90%", margin: "0 auto" }} >
+        <div style={{ width: "100%" }}>
 
-    <div style={{ display: 'flex', justifyContent: "center", textAlign: "center",width:"90%" ,margin:"0 auto"}}>
+          <Table columns={columns} dataSource={data} />
 
-      <table >
-        
-        <tr>
-          <th style={{width:"100px"}}>Name</th>
-        
-          <th style={{width:"100px"}} >Bounty</th>
-        </tr>
-        
-        {charactersAll.map(All => (
+        </div>
 
-          <tr>
-            <td>{All.french_name}</td>
-          
-            <td>{All.bounty}</td>
+      </div>
 
-          </tr>
-        ))}
- </table>
+    </>
+    // <div style={{ display: 'flex', justifyContent: "center", textAlign: "center", width: "90%", margin: "0 auto" }}>
+    //   <table >  {loading ? <tr>
+    //     <th style={{ width: "100px" }}>Name</th>
 
-    </div>
+    //     <th style={{ width: "100px" }} >Bounty</th>
+    //   </tr> : <MagnifyingGlass
+    //     visible={true}
+    //     height="80"
+    //     width="80"
+    //     ariaLabel="MagnifyingGlass-loading"
+    //     wrapperStyle={{}}
+    //     wrapperClass="MagnifyingGlass-wrapper"
+    //     glassColor='#c0efff'
+    //     color='#e15b64'
+    //   />}
+
+
+
+
+    //     {charactersAll.map(All => (
+
+    //       <tr>
+    //         <td>{All.french_name}</td>
+
+    //         <td>{All.bounty}</td>
+
+    //       </tr>
+    //     ))}
+    //   </table>
+
+    // </div>
   )
 }
 
