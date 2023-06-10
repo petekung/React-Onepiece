@@ -3,48 +3,35 @@ import React from 'react'
 import axios from 'axios';
 import { MagnifyingGlass } from 'react-loader-spinner'
 import { Table } from 'antd';
+const url = 'https://api.api-onepiece.com/characters';
+const data = [];
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: data.name,
+  },
+];
+axios.get(url).then((response) => {
+  const Data_1 = response.data 
+  Data_1.forEach((itme,index) => {
+       console.log(itme.french_name,index)
+       data.push({
+        key: index,
+        name: itme.french_name,
+      });
+  })
 
+
+})
 function DataOnepiece() {
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-    },
-
-  ];
-  // const [data, setData,] = useState([]);
   const [charactersAll, setCharactersAll] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(1)
+  useEffect(() => {  
+  },[]);
 
-  const url = 'https://api.api-onepiece.com/characters';
-  const data = [];
-  // data.push({
 
-  //   key: "sdf",
-  //   name: "Name",
-  // });
-  try {
+ 
 
-    axios.get(url).then((response) => {
-
-      // handle success
-      // console.log(response.data);
-   
-      for (const item  in response.data) {
-        var userData = response.data[item];
-        data.push({
-
-          key: userData.id,
-          name: userData.french_name,
-        });
-        console.log(data.index)
-
-      }
-
-    })
-  } catch (error) {
-    console.error(error);
-  }
 
 
 
