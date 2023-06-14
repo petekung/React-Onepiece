@@ -2,18 +2,13 @@ import { useState, useEffect } from 'react';
 import React from 'react'
 import axios from 'axios';
 import { MagnifyingGlass } from 'react-loader-spinner'
-import { Table ,Typography } from 'antd';
+import { Table, Typography, Card, Space } from 'antd';
 const { Text } = Typography;
 function DataOnepiece() {
+  const DataALL = [];
   const [data, setData] = useState([])
-  const Belly = (
-    <Text disabled style={{ fontSize: 25 }}>
-     Belly
-    
-    </Text>
-  );
   const columns = [
-    
+
     {
       key: "1",
       title: 'Name',
@@ -26,27 +21,29 @@ function DataOnepiece() {
       dataIndex: 'bounty',
       width: "100px",
       render: (_, record) => (
-          <div>
+        <div>
           <Text type="success">
             {record.bounty ? (
-              record.bounty+"Belly"
+              record.bounty + "Belly"
             ) : (
               <Text type="warning"> Undisclosed</Text>
             )}
           </Text>
-          </div>
-    
-      
+        </div>
+
+
       ),
     },
   ];
-  const DataALL = [];
+
   data.forEach((item) => {
+  
     DataALL.push({
       key: item.id,
       name: item.french_name,
       bounty: item.bounty,
     });
+    
   });
   const [loading, setLoading] = useState(false)
   useEffect(() => {
@@ -76,9 +73,24 @@ function DataOnepiece() {
           <Table columns={columns} dataSource={DataALL} />
         </div> : <MagnifyingGlass
 
-        />}
+        />}  
       </div>
+      <div style={{ justifyContent: "center",display:"flex",flexDirection:"column",margin: "0 auto" ,width:"100%"}}>
+        <div style={{ justifyContent: "center",display:"flex",margin: "0 auto" }}>
+        {data.map((item) => (
+          <Space direction="vertical" size="middle" style={{ display: 'flex' ,width:"250px"}}>
+            <Card title="Card" size="small">
+              <p>{item.french_name}</p>
+            
+            </Card>
+          </Space>
+        ))}
+        </div>
 
+    
+
+    </div>
+  
     </>
   )
 }
