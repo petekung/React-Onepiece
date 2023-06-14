@@ -6,6 +6,12 @@ import { Table ,Typography } from 'antd';
 const { Text } = Typography;
 function DataOnepiece() {
   const [data, setData] = useState([])
+  const Belly = (
+    <Text disabled style={{ fontSize: 25 }}>
+     Belly
+    
+    </Text>
+  );
   const columns = [
     
     {
@@ -20,14 +26,16 @@ function DataOnepiece() {
       dataIndex: 'bounty',
       width: "100px",
       render: (_, record) => (
-        
+          <div>
           <Text type="success">
             {record.bounty ? (
-              record.bounty + " Belly "
+              record.bounty+"Belly"
             ) : (
               <Text type="warning"> Undisclosed</Text>
             )}
           </Text>
+          </div>
+    
       
       ),
     },

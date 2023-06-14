@@ -1,8 +1,14 @@
 import React from 'react'
+import Navber from '../componenct/navber'
 
 function about() {
   return (
-    <div>about</div>
+    <>
+      <Navber />
+      <div>about</div>
+    </>
+
+
   )
 }
 
