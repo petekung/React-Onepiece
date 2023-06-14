@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import React from 'react'
 import axios from 'axios';
 import { MagnifyingGlass } from 'react-loader-spinner'
-import { Table } from 'antd';
+import { Table ,Typography } from 'antd';
+const { Text } = Typography;
 function DataOnepiece() {
   const [data, setData] = useState([])
   const columns = [
+    
     {
       key: "1",
       title: 'Name',
@@ -16,7 +18,18 @@ function DataOnepiece() {
       key: "2",
       title: 'Bounty',
       dataIndex: 'bounty',
-      width: "100px"
+      width: "100px",
+      render: (_, record) => (
+        
+          <Text type="success">
+            {record.bounty ? (
+              record.bounty + " Belly "
+            ) : (
+              <Text type="warning"> Undisclosed</Text>
+            )}
+          </Text>
+      
+      ),
     },
   ];
   const DataALL = [];
