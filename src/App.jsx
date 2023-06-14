@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import './App.css'
 import DataOnepiece from './componenct/DataOnepiece'
 
 function App() {
