@@ -1,5 +1,6 @@
 import React from 'react'
 import DataOnepiece from '../componenct/DataOnepiece'
+import DataOnepiece2 from '../componenct/DataOnepiece copy'
  import Navber from '../componenct/navber'
  import Footer from '../componenct/footer'
 function home() {
@@ -13,6 +14,7 @@ function home() {
       <div style={{ height: "50px" }}></div>
    
        <DataOnepiece />
+      {/* <DataOnepiece2/> */}
        <Footer/>
     </>
 

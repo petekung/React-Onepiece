@@ -58,6 +58,7 @@ function DataOnepiece() {
   });
   const [loading, setLoading] = useState(true)
   const [loading_2, setLoading_2] = useState(false)
+  const [hasData, setHasData] = useState(true);
 
   const onChange = (checked) => {
     setLoading(!checked);
@@ -83,13 +84,13 @@ function DataOnepiece() {
   }
   return (
     <>
-      <div>        <Switch checked={!loading} onChange={onChange} />
+      <div  style={{display:"flex",justifyContent:"center",marginBottom:"10px"}}> <Switch checked={!loading} onChange={onChange} />
       </div>
       <div style={{ display: 'flex', justifyContent: "center", textAlign: "center", width: "100%", margin: "0 auto" }} >
         {loading ? <div style={{ width: "50%", height: "50%" }}>
 
           <Table
-              style={{fontSize:"10xpx"}}
+            style={{ fontSize:"10px"}}
             columns={columns}
             dataSource={DataALL}
             pagination={false}
