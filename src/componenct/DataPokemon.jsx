@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import React from 'react'
 import axios from 'axios';
 import { MagnifyingGlass } from 'react-loader-spinner'
-import { Table, Typography, Card, Space, Avatar, Skeleton, Switch, Col, Row, Slider } from 'antd';
+import { Table, Typography, Card, Space, Avatar, Skeleton, Switch, Col, Row, Slider,Pagination ,Dropdown } from 'antd';
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import { key } from 'localforage';
 const { Text } = Typography;
 const { Meta } = Card;
 function DataOnepiece() {
@@ -25,41 +24,25 @@ function DataOnepiece() {
       width: "40px",
 
     },
-    // {
-    //   key: "2",
-    //   title: 'Bounty',
-    //   dataIndex: 'bounty',
-    //   width: "1px",
-    //   render: (_, record) => (
-    //     <div>
-    //       <Text type="success">
-    //         {record.bounty ? (
-    //           record.bounty + "Belly"
-    //         ) : (
-    //           <Text type="warning"> Undisclosed</Text>
-    //         )}
-    //       </Text>
-    //     </div>
+    {
+      key: "1",
+      title: 'Name',
+      dataIndex: 'name',
+      width: "40px",
+
+    },
 
 
-    //   ),
-    // },
   ];
-
   data.forEach((item) => {
-
     DataALL.push({
-      key: item.id,
-      number: item.id,
-      name: item.french_name,
-      bounty: item.bounty,
+      key: item.url,
+      name: item.name,
     });
-
   });
   const [loading, setLoading] = useState(true)
   const [loading_2, setLoading_2] = useState(false)
   const [hasData, setHasData] = useState(true);
-
   const onChange = (checked) => {
     setLoading(!checked);
     getData();
@@ -68,10 +51,12 @@ function DataOnepiece() {
   //   getData();
   // }, [])
   const getData = () => {
-    const url = 'https://api.api-onepiece.com/characters';
+    const url = 'https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0';
     axios.get(url).then((response) => {
       var Data = response.data
-      setData(Data)
+      var Data_2 = Data.results
+      console.log(Data_2);
+      setData(Data_2)
       if (Data) {
         setLoading(true)
       }
@@ -84,13 +69,12 @@ function DataOnepiece() {
   }
   return (
     <>
-      <div  style={{display:"flex",justifyContent:"center",marginBottom:"10px"}}> <Switch checked={!loading} onChange={onChange} />
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: "10px" }}> <Switch checked={!loading} onChange={onChange} />
       </div>
       <div style={{ display: 'flex', justifyContent: "center", textAlign: "center", width: "100%", margin: "0 auto" }} >
         {loading ? <div style={{ width: "50%", height: "50%" }}>
-
           <Table
-            style={{ fontSize:"10px"}}
+            style={{ fontSize: "10px" }}
             columns={columns}
             dataSource={DataALL}
             pagination={false}
@@ -99,11 +83,16 @@ function DataOnepiece() {
               y: 500,
             }}
             bordered
-       
-          /> 
-        </div> : <MagnifyingGlass
 
-        />}
+          />
+  
+        </div> : <div style={{ height: "490px" }}>
+          <MagnifyingGlass />  </div>}
+        {/* <Card title="Card title" bordered={false} style={{ width: 300 }}>
+          <p>Card content</p>
+          <p>Card content</p>
+          <p>Card content</p>
+        </Card> */}
         {/* {data.map((item)=>
 
       <Card
@@ -134,7 +123,7 @@ function DataOnepiece() {
       
       
       )}  */}
-   
+
       </div>
       {/* <div style={{ justifyContent: "center",display:"flex",flexDirection:"column",margin: "0 auto" ,width:"100%"}}>
         <div style={{ justifyContent: "center",display:"flex",margin: "0 auto" }}>
