@@ -1,148 +1,71 @@
-import { useState, useEffect } from 'react';
-import React from 'react'
-import axios from 'axios';
-import { MagnifyingGlass } from 'react-loader-spinner'
-import { Table, Typography, Card, Space, Avatar, Skeleton, Switch, Col, Row, Slider,Pagination ,Dropdown } from 'antd';
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-const { Text } = Typography;
-const { Meta } = Card;
-function DataOnepiece() {
-  const DataALL = [];
-  const [data, setData] = useState([])
-  const columns = [
-    {
-      key: "1",
-      title: 'ID',
-      dataIndex: 'number',
-      width: "1px",
+import React from "react";
+import Card from "./Card";
+import Pokeinfo from "./Pokeinfo";
+import axios from "axios";
 
-    },
-    {
-      key: "1",
-      title: 'Name',
-      dataIndex: 'name',
-      width: "40px",
+import { useState } from "react";
+import { useEffect } from "react";
+const Main = () => {
 
-    },
-    {
-      key: "1",
-      title: 'Name',
-      dataIndex: 'name',
-      width: "40px",
-
-    },
+  const [pokeData, setPokeData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [url, setUrl] = useState("https://pokeapi.co/api/v2/pokemon/")
+  const [nextUrl, setNextUrl] = useState();
+  const [prevUrl, setPrevUrl] = useState();
+  const [pokeDex, setPokeDex] = useState();
 
 
-  ];
-  data.forEach((item) => {
-    DataALL.push({
-      key: item.url,
-      name: item.name,
-    });
-  });
-  const [loading, setLoading] = useState(true)
-  const [loading_2, setLoading_2] = useState(false)
-  const [hasData, setHasData] = useState(true);
-  const onChange = (checked) => {
-    setLoading(!checked);
-    getData();
-  };
-  // useEffect(() => {
-  //   getData();
-  // }, [])
-  const getData = () => {
-    const url = 'https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0';
-    axios.get(url).then((response) => {
-      var Data = response.data
-      var Data_2 = Data.results
-      console.log(Data_2);
-      setData(Data_2)
-      if (Data) {
-        setLoading(true)
-      }
-
-    })
-      .catch((error) => {
-      }
-      );
-
+  const pokeFun = async () => {
+    setLoading(true)
+    const res = await axios.get(url);
+    setNextUrl(res.data.next);
+    setPrevUrl(res.data.previous);
+    getPokemon(res.data.results)
+    setLoading(false)
   }
+  const getPokemon = async (res) => {
+    res.map(async (item) => {
+      const result = await axios.get(item.url)
+      setPokeData(state => {
+        state = [...state, result.data]
+        state.sort((a, b) => a.id > b.id ? 1 : -1)
+        return state;
+      })
+    })
+  }
+  console.log(pokeData);
+  useEffect(() => {
+    pokeFun();
+    
+  }, [url])
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "center", marginBottom: "10px" }}> <Switch checked={!loading} onChange={onChange} />
-      </div>
-      <div style={{ display: 'flex', justifyContent: "center", textAlign: "center", width: "100%", margin: "0 auto" }} >
-        {loading ? <div style={{ width: "50%", height: "50%" }}>
-          <Table
-            style={{ fontSize: "10px" }}
-            columns={columns}
-            dataSource={DataALL}
-            pagination={false}
-            scroll={{
-              x: 2000,
-              y: 500,
-            }}
-            bordered
+      <div className="btn-group">
+        {prevUrl && <button onClick={() => {
+          setPokeData([])
+          setUrl(prevUrl)
+        }}>Previous</button>}
 
-          />
-  
-        </div> : <div style={{ height: "490px" }}>
-          <MagnifyingGlass />  </div>}
-        {/* <Card title="Card title" bordered={false} style={{ width: 300 }}>
-          <p>Card content</p>
-          <p>Card content</p>
-          <p>Card content</p>
-        </Card> */}
-        {/* {data.map((item)=>
-
-      <Card
-      style={{
-        width: 300,
-        marginTop: 16,
-        display:"flex",
-        flexDirection:"column"
-      
-      }}
-      actions={[
-        <SettingOutlined key="setting" />,
-        <EditOutlined key="edit" />,
-        <EllipsisOutlined key="ellipsis" />,
-      ]}
-    >
-      <Skeleton loading={loading_2} avatar active>
-        <Meta
-          avatar={<Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=2" />}
-          title="Card title"
-          description="This is the description"
-        />
-      </Skeleton>
-    </Card>
-      
-      
-      
-      
-      
-      )}  */}
+        {nextUrl && <button onClick={() => {
+          setPokeData([])
+          setUrl(nextUrl)
+        }}>Next</button>}
 
       </div>
-      {/* <div style={{ justifyContent: "center",display:"flex",flexDirection:"column",margin: "0 auto" ,width:"100%"}}>
-        <div style={{ justifyContent: "center",display:"flex",margin: "0 auto" }}>
-        {data.map((item) => (
-          <Space direction="vertical" size="middle" style={{ display: 'flex' ,width:"250px"}}>
-            <Card title="Card" size="small">
-              <p>{item.french_name}</p>
-            
-            </Card>
-          </Space>
-        ))}
-        </div> */}
+      <div className="container">
+        <div className="left-content">
+          <Card pokemon={pokeData} loading={loading} infoPokemon={poke => setPokeDex(poke)}  />
 
+        </div>
 
-
-      {/* </div> */}
-
+      </div>
+      <div className="right-content">
+   
+      <div>
+      <Pokeinfo data={pokeDex} />
+        </div> 
+      </div>
     </>
   )
 }
-
-export default DataOnepiece
+export default Main;

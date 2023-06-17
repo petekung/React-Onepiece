@@ -16,7 +16,7 @@ function home() {
       {/* <DataOnepiece2/> */}
       <div style={{ height: "50px" }}></div>
 
-       <Footer/>
+       {/* <Footer/> */}
     </>
 
 
